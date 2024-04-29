@@ -156,6 +156,7 @@ class AlarmClock:
         messagebox.showinfo("Alarm Set", f"Alarm set for {alarm_time}")
         sound_name = self.ringtone_combo.get()
         message = self.message_entry.get()
+        found = False
         try:
             while True:
                 # The current time is in 24 hour format
@@ -167,8 +168,49 @@ class AlarmClock:
                     args=(ringtones_path[sound_name],))
                     process.start()
                     messagebox.showinfo("Alarm",f"{message}, It's {alarm_time}")
-                    process.terminate()
-                    break
+                    result = messagebox.askyesno("Custom Message", "Do you want to snooze for 5 minutes?")
+                    if result:
+                         print("User clicked 'Yes'")
+
+                         process.terminate()
+
+
+                         p = int(self.minute_combo.get())
+                         p5 = str(p + 5)
+                         alarm_time = f"{self.hour_combo.get()}:{p5}"
+                         messagebox.showinfo("Alarm Set", f"Alarm set for {alarm_time}")
+                         sound_name = self.ringtone_combo.get()
+                         message = self.message_entry.get()
+                         try:
+                            while True:
+                # The current time is in 24 hour format
+                                current_time = datetime.now()
+                # Converting the current time into hours and minutes
+                                current_time_format = current_time.strftime("%H:%M")
+                                if current_time_format == alarm_time:
+                                   process = multiprocessing.Process(target=playsound, 
+                                   args=(ringtones_path[sound_name],))
+                                   process.start()
+                                   messagebox.showinfo("Alarm",f"{message}, It's {alarm_time}")
+                                   process.terminate()
+                                   found = True
+                                   break
+
+                            if found:
+                                    break
+
+            
+                         except Exception as es:
+                             messagebox.showerror("Error!", f"Error due to {es}")
+
+
+
+
+                    else:
+                        print("User clicked 'No'")
+                        process.terminate()
+                        break
+            
         except Exception as es:
             messagebox.showerror("Error!", f"Error due to {es}")
 
