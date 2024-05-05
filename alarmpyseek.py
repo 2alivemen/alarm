@@ -166,8 +166,19 @@ class AlarmClock:
         x = Thread(target=self.save_alarm)
         x.start()
 
-    def save_alarm(self):
-        alarm_time = f"{self.hour_combo.get()}:{self.minute_combo.get()}"
+    # Alarm snooze maadtu
+    def snooze_alarm(self):
+        pass
+
+    def save_alarm(self, alarm_timee):
+        #Argument beda andre
+        alarm_time = ""
+        if not alarm_timee:
+            alarm_time = f"{self.hour_combo.get()}:{self.minute_combo.get()}"
+        
+        
+
+        # alarm_time = f"{self.hour_combo.get()}:{self.minute_combo.get()}"
         messagebox.showinfo("Alarm Set", f"Alarm set for {alarm_time}")
         sound_name = self.ringtone_combo.get()
         message = self.message_entry.get()
@@ -191,8 +202,16 @@ class AlarmClock:
 
 
                          p = int(self.minute_combo.get())
-                         p5 = str(p + 5)
-                         alarm_time = f"{self.hour_combo.get()}:{p5}"
+                         h = int(self.hour_combo.get())
+
+                         # Time ondu taasu daatidare
+                         if p+5 > 60:
+                             h1 = str(h+1)
+                             p1 = str(p % 60)
+                             alarm_time = f"{h1}:{p1}"
+                         else:
+                             p1 = str(p + 1)
+                             alarm_time = f"{self.hour_combo.get()}:{p1}"
                          messagebox.showinfo("Alarm Set", f"Alarm set for {alarm_time}")
                          sound_name = self.ringtone_combo.get()
                          message = self.message_entry.get()
