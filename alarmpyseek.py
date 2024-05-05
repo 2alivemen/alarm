@@ -7,6 +7,10 @@ import multiprocessing
 from datetime import datetime
 from threading import *
 
+can = True
+
+
+
 hours_list = ['00', '01', '02', '03', '04', '05', '06', '07',
 		'08', '09', '10', '11', '12', '13', '14', '15',
 		'16', '17', '18', '19', '20', '21', '22', '23', '24']
@@ -51,6 +55,8 @@ class AlarmClock:
         font=('Helvetica',15), bg="green", fg="white", 
         command=self.set_alarm)
         set_button.place(x=270, y=220)
+        button = Button(root, text="Cancel Alarm", command=self.change_value)
+        button.place(x=270, y=320)
 
       # Method to show the current time in the first window
     def show_time(self):
@@ -60,10 +66,19 @@ class AlarmClock:
         self.display.after(100, self.show_time)
 
 
+
+    def change_value():
+       global can
+       can = False
+       print(f'Value of var: {can}')
+       messagebox.showinfo("Alarm Canceled")
+
+
     def set_alarm(self):
         self.alarm_window = Tk()
         self.alarm_window.title("Set Alarm")
         self.alarm_window.geometry("680x420+200+200")
+        
         
         # Hour Label
         hours_label = Label(self.alarm_window, text="Hours", 
@@ -158,7 +173,7 @@ class AlarmClock:
         message = self.message_entry.get()
         found = False
         try:
-            while True:
+            while can:
                 # The current time is in 24 hour format
                 current_time = datetime.now()
                 # Converting the current time into hours and minutes
